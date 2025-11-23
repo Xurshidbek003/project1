@@ -11,7 +11,7 @@ from google.auth.transport import requests
 
 
 SECRET_KEY = "my_secret_key_123"
-ALGORITHM = 'HS256'
+ALGORITHM = 'RS256'
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 GOOGLE_CLIENT_ID = '112664989729-cdhdnsec73qvkrajqom9fr5d6ehvm6uj.apps.googleusercontent.com'
 
