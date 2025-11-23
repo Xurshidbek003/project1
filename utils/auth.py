@@ -8,14 +8,12 @@ from database import database
 from models.users import User
 from google.oauth2 import id_token
 from google.auth.transport import requests
-import os
 
 
-
-SECRET_KEY = os.getenv('SECRET_KEY')
-ALGORITHM = os.getenv('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+SECRET_KEY = "my_secret_key_123"
+ALGORITHM = 'HS256'
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+GOOGLE_CLIENT_ID = '112664989729-cdhdnsec73qvkrajqom9fr5d6ehvm6uj.apps.googleusercontent.com'
 
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")

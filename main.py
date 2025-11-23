@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from database import Base, engine
+from fastapi.middleware.cors import CORSMiddleware
 from routers.users import router as auth_router
 
 app = FastAPI(
@@ -7,6 +8,14 @@ app = FastAPI(
     description="API for kindergarten management",
     version="0.0.1",
     docs_url="/",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 Base.metadata.create_all(bind=engine)
