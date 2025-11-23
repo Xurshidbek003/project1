@@ -18,3 +18,8 @@ class UserRead(BaseModel):
     username: str
     email: EmailStr
     role: str
+    google_id: Optional[str] = None
+
+
+class GoogleAuthRequest(BaseModel):
+    token: str

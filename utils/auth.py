@@ -6,11 +6,17 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from database import database
 from models.users import User
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import os
 
 
-SECRET_KEY = "my_secret_key_123"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
@@ -35,6 +41,25 @@ def create_access_token(data: dict, expires_delta: int = None):
 
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return token
+
+
+def verify_google_token(token: str) -> dict:
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            token,
+            requests.Request(),
+            GOOGLE_CLIENT_ID
+        )
+
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise ValueError('Wrong issuer.')
+
+        return idinfo
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Invalid Google token: {str(e)}"
+        )
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database)):
