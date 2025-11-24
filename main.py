@@ -13,6 +13,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://localhost:5173/register",
         "https://forkindergarten.netlify.app/",
         "http://localhost:5173/"
     ],
